@@ -45,6 +45,7 @@ public class TestCompletableFuture {
             System.out.println("completion 6");
             return s + " 6";
         });
+        // 注意这里如果是连续的thenApply，连续注册，执行顺序会改变
         completion2.thenApply(s -> {
             System.out.println("completion 7");
             return s + " 7";
