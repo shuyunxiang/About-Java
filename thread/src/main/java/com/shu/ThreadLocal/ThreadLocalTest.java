@@ -9,8 +9,6 @@ public class ThreadLocalTest {
         String s = stringThreadLocal.get();
         System.out.println(s);
         stringThreadLocal.remove();
-
-        TransmittableThreadLocal transmittableThreadLocal = new TransmittableThreadLocal();
     }
 
 }
