@@ -1,0 +1,32 @@
+package com.shu.ThreadLocal.My;
+
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+public class Test {
+    private static CoreThreadLocal<String> ttl = new CoreThreadLocal<>();
+
+    /**
+     * 保证只有1个线程,以便观察这个线程被多个Runnable复用时，能否成功完成ThreadLocal的传递
+     **/
+    private static ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
+            1, 1, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10));
+
+    public static void main(String[] args) throws InterruptedException {
+        ttl.set("yogurtzzz");
+
+        for (int i = 0; i < 5; i++) {
+            if (i == 2) {
+                ttl.set("changed");
+            }
+            CoreRunnable runnable = CoreRunnable.getRunnable(() -> {
+                System.out.println(Thread.currentThread().getName() + " : " + ttl.get());
+            });
+
+            threadPoolExecutor.execute(runnable);
+            //CompletableFuture.runAsync(runnable,threadPoolExecutor);
+            TimeUnit.MILLISECONDS.sleep(500);
+        }
+    }
+}
