@@ -19,7 +19,7 @@ public class StaticUse {
         System.out.println("初始化执行");
     }
 
-    // 内部类
+    // 静态内部类
     static class InnerClass {
         String getStr() {
             return "静态内部类的方法";
